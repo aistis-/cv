@@ -1,0 +1,49 @@
+<div class="container">
+
+    <div class="form-container col-md-10 col-md-offset-1">
+
+        <a class="form-upper-btn" href="{{ path('fos_user_profile_show') }}">Gįžti atgal</a>
+        <p class="page-heading">Redaguoti profilį</p>
+
+        {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit', 'novalidate': 'novalidate'} }) }}
+
+            {{ form_row(form.name) }}
+
+            {{ form_row(form.surname) }}
+
+            {{ form_row(form.phone) }}
+
+            {{ form_row(form.email) }}
+
+            {#TODO remove displayed photo when new one is selected#}
+            {% if app.user.photo %}
+                <img class="img-responsive profile-img" src="{{ asset('img/profiles/'~app.user.photo ?? 'no-photo.jpg')}}" alt="Nuotrauka">
+            {% endif %}
+            {{ form_row(form.imageFile) }}
+
+            {{ form_row(form.birthday) }}
+
+            {{ form_row(form.city) }}
+
+            {{ form_row(form.profession) }}
+
+            {{ include('FOSUser/add_skills_form.html.twig') }}
+
+            {{ form_row(form.introduction) }}
+
+            <div class="text-right">
+                <small>* Pažymėti laukai turi būti užpildyti</small>
+            </div>
+
+            <div class="text-center">
+                <input type="submit" class="btn btn-primary" value="Redaguoti"/>
+            </div>
+
+        {{ form_end(form) }}
+
+    </div>
+
+    {# Pop-up renders on add-skills button click #}
+    {{ include('FOSUser/add_skills_popup.html.twig') }}
+
+</div>

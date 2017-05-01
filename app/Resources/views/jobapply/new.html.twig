@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="form-container">
+            <p class="page-heading">Kandidatuok!</p>
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'} }) }}
+
+                {{ form_row(form.assignmentSolution) }}
+
+                {{ form_row(form.imageFile) }}
+
+                <div class="btn-block">
+                    <input class="btn btn-primary" type="submit" value="Kandidatuoti" />
+                </div>
+            {{ form_end(form) }}
+
+            <div class="text-right">
+                <a href="{{ app.request.headers.get('referer') }}">Grįžti atgal</a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

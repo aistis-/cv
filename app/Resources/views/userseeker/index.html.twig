@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="content-container">
+
+            <p class="page-heading">Šiuo metu darbo ieško:</p>
+
+            {% for userSeeker in userSeekers %}
+                {# Lists 3 divs in one row #}
+                {% if loop.index0 is divisible by(3) %}
+                    <div class="row">
+                {% endif %}
+                    <div class="col-md-4">
+                        <div class="job-ad-box box-lg">
+
+                            <div class="row">
+                                <div class="col-md-12 col-sm-6">
+                                    <img class="img-responsive seekers-list-img" src="{{ asset('img/profiles/'~userSeeker.photo ?? 'no-photo.jpg')}}" alt="Nuotrauka">
+                                </div>
+                                <div class="col-md-12 col-sm-6 col-xs-12">
+                                    <ul class="profile-list">
+                                        <li class="section-heading">{{ userSeeker.name }} {{ userSeeker.surname }}</li>
+                                        <li>{{ userSeeker.profession }}</li>
+                                        <li>{{ userSeeker.city }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            {% if userSeeker.skills.count > 0 %}
+                                <div class="seekers-list-skills">
+                                    {% for skill in userSeeker.skills %}
+                                        <span class="skill">{{ skill.title }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <div class="job-ad-button">
+                                <a href="{{ path('user_seeker_show', {'id' : userSeeker.id}) }}" class="btn btn-primary">Rodyti daugiau</a>
+                            </div>
+
+                        </div>
+                    </div>
+                {% if loop.index is divisible by(3) or loop.last %}
+                    </div> {# /row #}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

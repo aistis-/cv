@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="container">
+
+        <div class="col-md-8 col-md-offset-2">
+            <div class="form-container">
+
+                <p class="page-heading">Užsiregistruok!</p>
+                <p>Užpildyk žemiau esančius laukus:</p>
+
+                {{ form_start(form, {'action': path('user_seeker_registration'), 'method': 'POST', 'attr': {'novalidate': 'novalidate'} }) }}
+
+                    {{ form_row(form.name) }}
+
+                    {{ form_row(form.surname) }}
+
+                    {{ form_row(form.email) }}
+
+                    {{ form_row(form.plainPassword.first) }}
+
+                    {{ form_row(form.plainPassword.second) }}
+
+                    <small>* Pažymėti laukai turi būti užpildyti</small>
+
+                    <div class="text-center">
+                        <input type="hidden" name="role" value="ROLE_USER_SEEKER">
+                        <input type="submit" class="btn btn-primary" value="Registruokis"/>
+                    </div>
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+
+    </div>
+{% endblock body %}

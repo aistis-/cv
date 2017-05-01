@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="form-container">
+
+            <div class="text-right">
+                <a href="{{ app.request.headers.get('referer') }}">Grįžti atgal</a>
+            </div>
+
+            <p class="page-heading">{{ form.vars.value.id ? "Redaguok skelbimą!" : "Sukurk skelbimą!" }}</p>
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'} }) }}
+                {% set action = form.vars.value.id is null? path('jobad_new'): path('jobad_edit', {'id': form.vars.value.id }) %}
+
+                    {{ form_row(form.title) }}
+
+                    {# Add requirements form #}
+                    {{ include('jobad/add_requirements_form.html.twig') }}
+
+                    {{ form_row(form.assignment) }}
+
+                    {{ form_row(form.description) }}
+
+                    <div class="text-right">
+                        <small>* Pažymėti laukai turi būti užpildyti</small>
+                    </div>
+
+                    <div class="btn-block">
+                        <input class="btn btn-primary" type="submit" value="Sukurti"/>
+                    </div>
+            {{ form_end(form) }}
+
+            {# Delete form. Visable only in edit route#}
+            {% if( form.vars.value.id != null) %}
+                {{ form_start(delete_form) }}
+                <div class="btn-block">
+                    <input class="btn btn-default" type="submit" value="Ištrinti">
+                </div>
+                {{ form_end(delete_form) }}
+            {% endif %}
+        </div>
+
+        {# Pop-up renders on add-requirements button click #}
+        {{ include('jobad/add_requirements_popup.html.twig') }}
+    </div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="form-container">
+
+            <div class="show-candidates-count">
+                {% if jobAd.jobApply.count > 0 %}
+                    <p>Į šią poziciją kandidatavo: {{ jobAd.jobApply.count }}</p>
+                {% elseif jobAd.jobApply.count == 0 and is_granted('ROLE_USER_SEEKER') %}
+                    <a href="{{ path('jobapply_new', { 'ad_id': jobAd.id }) }}">Tapk pirmu kandidatu į šią poziciją!</a>
+                {% else %}
+                    <p>Kandidatų į šią poziciją kol kas neturite</p>
+                {% endif %}
+            </div>
+
+            <div class="text-center">
+                <p class="job-title show-job-ad-title">{{ jobAd.title }}</p>
+            </div>
+
+            <div class="text-center info-block">
+                <p><b>{{ jobAd.owner.title }}</b></p>
+            </div>
+
+            <div class="text-center">
+                {% for requirement in jobAd.requirements %}
+                    <span class="requirement">{{ requirement.title }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="info-block">
+                <p class="section-heading">Apie siūlomą poziciją:</p>
+                <p>{{ jobAd.description }}</p>
+            </div>
+
+            <div class="info-block">
+                <p class="section-heading">Užduotis kandidatams</p>
+                <a href="{{ jobAd.assignment }}">{{ jobAd.assignment }}</a>
+            </div cla>
+
+            <div class="btn-block">
+                {# Don't show for ROLE_EMPLOYER #}
+                {% if not is_granted('ROLE_USER_EMPLOYER') %}
+                    {# Only registered ROLE_SEEKER can apply #}
+                    {% if is_granted('ROLE_USER_SEEKER') %}
+                        <a class="btn btn-primary"
+                           href="{{ path('jobapply_new', { 'ad_id': jobAd.id }) }}">Kandidatuoti</a>
+                    {% else %}
+                        <p>Prisijunkite arba užsiregistruokite</p>
+                        <a class="btn btn-primary disabled"
+                           href="{{ path('user_seeker_registration') }}">Kandidatuoti</a>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+
+            {# Show EDIT button only for owner #}
+            {% if app.user == jobAd.getOwner %}
+                <div class="text-center">
+                    <a class="btn btn-primary" href="{{ path('jobad_edit', { 'id': jobAd.id }) }}">Redaguoti</a>
+                </div>
+            {% endif %}
+
+            <div class="text-right">
+                <a href="{{ app.request.headers.get('referer') }}">Grįžti atgal</a>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

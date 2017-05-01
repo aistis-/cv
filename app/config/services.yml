@@ -1,0 +1,33 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+    #parameter_name: value
+
+services:
+    #service_name:
+    #    class: AppBundle\Directory\ClassName
+    #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+    authentication.handler.login_success_handler:
+        class: AppBundle\Security\LoginSuccessHandler
+        arguments:  ['@router', '@security.authorization_checker']
+
+    app.registration_confirm_subscriber:
+        class: AppBundle\EventListener\RegistrationConfirmSubscriber
+        arguments: ['@router']
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Manage access for JobAds
+    app.jobad_voter:
+        class:  AppBundle\Security\JobAdVoter
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false
+
+    # get age from birthday
+    app.twig_extension:
+        class: AppBundle\Twig\AppExtension
+        public: false
+        tags:
+            - { name: twig.extension }
